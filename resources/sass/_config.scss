@@ -1,0 +1,31 @@
+$color1: white;
+$color2:rgb(237, 219, 120);
+$color3: black;
+$textShadow: 0 0 4px black, 0 0 5px black;
+
+
+@mixin spaceBeetweenRowFlex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px auto;
+}
+
+@mixin centerRowFlex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin centeredFlexColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.btn-a:hover{
+    background-color: rgba(42, 49, 92, 0.919);;
+    cursor: pointer;
+}

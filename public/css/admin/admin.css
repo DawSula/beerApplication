@@ -1,0 +1,42 @@
+.btn-a:hover {
+  background-color: rgba(42, 49, 92, 0.919);
+  cursor: pointer;
+}
+
+.beerElementBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.beerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.headAsk {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.paginator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.marginTop-Lg {
+  margin-top: 60px;
+}
+
+

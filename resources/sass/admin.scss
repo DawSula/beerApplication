@@ -1,0 +1,31 @@
+@import "config";
+
+.beerElementBlock{
+    @include centeredFlexColumn;
+    margin: 10px;
+}
+
+.beerContainer{
+    @include centerRowFlex;
+    flex-wrap: wrap;
+
+}
+.headAsk{
+    @include centerRowFlex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.paginator{
+    @include centeredFlexColumn;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.marginTop-Lg{
+    margin-top: 60px;
+}
+
+
+
+
