@@ -5,11 +5,14 @@ declare (strict_types=1);
 namespace App\Http\Controllers\Beers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MakeBeer;
 use App\Model\BeerStyle;
 use App\Repository\BeerRepositoryInterface;
 use App\Repository\Eloquent\StyleRepository;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
 use function view;
 
 class BeerController extends Controller
@@ -83,8 +86,15 @@ class BeerController extends Controller
         return view('beers.add',['allStyles' => $this->styleRepository->all(),]);
     }
 
-    public function addBeer(){
+    public function addBeer(MakeBeer $request){
+        $data = $request->all();
 
+        $this->beerRepository->makeBeer($data);
+
+
+        return redirect()
+            ->route('/')
+            ->with('success', 'Piwo zostało dodane');
     }
 
     public function edit($id)

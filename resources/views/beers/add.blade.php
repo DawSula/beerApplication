@@ -36,22 +36,29 @@
                     <label for="description">Opis</label>
                     <input
                         type="description"
-                        class="form-control"
+                        class="form-control @error('description') is-invalid @enderror"
                         id="description"
                         name="description"
                         value="{{ old('description') ?? "" }}">
-
+                    @error('description')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
 
                 </div>
 
                 <div class="form-group">
-                    <select class="custom-select mr-sm-2" name="style">
+
+                    <select class="custom-select mr-sm-2  @error('style') is-invalid @enderror" name="style">
                         <option value="" selected disabled>GATUNEK</option>
                         @foreach($allStyles ?? [] as $oneStyle)
                             <option value="{{ $oneStyle['id'] }}">{{ $oneStyle['name'] }}</option>
                         @endforeach
                     </select>
+                    @error('style')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
+
 
                 <div class="form-group">
                     <label for="image">Wybierz obraz</label>

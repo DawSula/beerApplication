@@ -7,6 +7,8 @@ namespace App\Repository\Eloquent;
 use App\Model\Beer;
 use App\Repository\BeerRepositoryInterface;
 use App\Service\FakeService;
+use Carbon\Carbon;
+use Illuminate\Http\Client\Request;
 
 class BeerRepository implements BeerRepositoryInterface
 {
@@ -20,7 +22,6 @@ class BeerRepository implements BeerRepositoryInterface
 
     public function get(int $beerId)
     {
-
         return $this->beerModel->find($beerId);
     }
 
@@ -69,9 +70,6 @@ class BeerRepository implements BeerRepositoryInterface
 
     public function filterBy(?string $phrase, $style, int $size)
     {
-
-
-
         $query = $this->beerModel
             ->with('beerStyle')
             ->orderBy('created_at');
@@ -83,11 +81,24 @@ class BeerRepository implements BeerRepositoryInterface
             $query->where('id_style',$style);
         }
 
-
-
-
         return $query->paginate($size);
 
+    }
+
+    public function makeBeer($data)
+    {
+
+        $path = $data['image']->store('images','s3');
+
+        $newBeer = new Beer([
+            'name'=>$data['name'],
+            'description'=>$data['description'],
+            'created_at'=> Carbon::now(),
+            'updated_at'=> Carbon::now(),
+            'id_style'=>$data['style'],
+            'image'=>$path ?? null,
+        ]);
+        $newBeer->save();
 
     }
 

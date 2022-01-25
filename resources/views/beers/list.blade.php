@@ -38,7 +38,11 @@
         @foreach($beers ?? [] as $beer)
             <div class="beerElementBlock">
                 <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="/img/defaultBeer.png" alt="Card image cap">
+                    @if($beer->image)
+                        <img src="{{ Storage::disk('s3')->temporaryUrl($beer->image, '+2 minutes') }}" class="rounded mx-auto d-block user-avatar">
+                    @else
+                        <img class="card-img-top" src="/img/defaultBeer.png" alt="Card image cap">
+                    @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $beer->name}}</h5>
                         <p class="card-text">{{ $beer->beerStyle->name}}</p>
