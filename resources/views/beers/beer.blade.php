@@ -20,7 +20,7 @@
             <form class="float-right m-0" method="post" action="{{ route('me.favourite.add') }}">
                 @csrf
                 <div class="form-row">
-                    <input type="hidden" name="gameId" value="{{ $beer->id }}">
+                    <input type="hidden" name="beerId" value="{{ $beer->id }}">
 
                     <button type="submit" class="btn btn-primary mb-2">Dodaj do mojej listy</button>
                 </div>

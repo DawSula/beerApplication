@@ -4,6 +4,7 @@ declare (strict_types=1);
 
 namespace App\Http\Controllers\Beers;
 
+use App\Facade\Beer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MakeBeer;
 use App\Model\BeerStyle;
@@ -93,7 +94,7 @@ class BeerController extends Controller
 
 
         return redirect()
-            ->route('/')
+            ->route('beers.list')
             ->with('success', 'Piwo zostało dodane');
     }
 
@@ -102,7 +103,16 @@ class BeerController extends Controller
         //do zrbobienia
     }
 
-    public function delete(){
+    public function delete(Request $request){
+
+
+
+        $this->beerRepository->deleteBeer((int) $request->get('beerId'));
+
+        return redirect()
+            ->route('beers.list')
+            ->with('success', 'Piwo zostało usunięte');
+
 
     }
 

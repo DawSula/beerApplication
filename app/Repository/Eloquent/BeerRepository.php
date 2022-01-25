@@ -87,7 +87,6 @@ class BeerRepository implements BeerRepositoryInterface
 
     public function makeBeer($data)
     {
-
         $path = $data['image']->store('images','s3');
 
         $newBeer = new Beer([
@@ -98,7 +97,16 @@ class BeerRepository implements BeerRepositoryInterface
             'id_style'=>$data['style'],
             'image'=>$path ?? null,
         ]);
-        $newBeer->save();
+        return $newBeer->save();
+    }
+
+    public function deleteBeer(int $id){
+
+        return  $this->beerModel->find($id)->delete();
+
+
+//        $this->beerModel->get($id)->delete();
+
 
     }
 

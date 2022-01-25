@@ -27,7 +27,7 @@ class AddBeerToUserList extends FormRequest
 
         return [
             'beerId' => [
-//                'required',
+                'required',
                 'integer',
                 'unique:userGames,game_id'
             ]

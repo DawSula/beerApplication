@@ -58,7 +58,7 @@ Route::group(['middleware'=>['auth']], function (){
 
         Route::get('{beer}', 'BeerController@show')->name('show');
 
-        Route::get('delete/{beer}', 'BeerController@delete')->name('delete');
+        Route::post('delete', 'BeerController@delete')->name('delete');
 
 
 
