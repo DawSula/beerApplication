@@ -9,6 +9,7 @@ use App\Repository\BeerRepositoryInterface;
 use App\Service\FakeService;
 use Carbon\Carbon;
 use Illuminate\Http\Client\Request;
+use function PHPUnit\Framework\isEmpty;
 
 class BeerRepository implements BeerRepositoryInterface
 {
@@ -87,7 +88,12 @@ class BeerRepository implements BeerRepositoryInterface
 
     public function makeBeer($data)
     {
-        $path = $data['image']->store('images','s3');
+        $image = $data['image'] ?? null;
+
+        if (!empty($image)){
+            $path = $data['image']->store('images','s3');
+        }
+
 
         $newBeer = new Beer([
             'name'=>$data['name'],
