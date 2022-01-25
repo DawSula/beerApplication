@@ -9,6 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.4.0",
+        "ext-pdo_sqlite": "*",
+        "aws/aws-sdk-php": "^3.209",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -16,7 +18,7 @@
         "laravel/legacy-factories": "^1.3",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
-        "ext-pdo_sqlite": "*"
+        "league/flysystem-aws-s3-v3": "~1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

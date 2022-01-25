@@ -5,7 +5,7 @@
         <h5 class="card-header">{{ $user->name }}</h5>
         <div class="card-body">
             @if($user->avatar)
-                <img src="{{ Storage::url($user->avatar) }}" class="rounded mx-auto d-block user-avatar">
+                <img src="{{ Storage::disk('s3')->temporaryUrl($user->avatar, '+2 minutes') }}" class="rounded mx-auto d-block user-avatar">
             @else
                 <img src="/images/avatar.png" class="rounded mx-auto d-block">
             @endif
