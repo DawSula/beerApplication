@@ -32,8 +32,8 @@
                     <li>OPIS: {{ $beer->description }}</li>
                 </ul>
             </div>
-
-
         @endif
+            <a class="btn btn-secondary btn-lg mt-2" role="button"
+               href="{{ route('beers.edit', ['beer'=>$beer->id]) }}">Edytuj</a>
     </div>
 @endsection

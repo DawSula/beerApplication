@@ -9,6 +9,7 @@ use App\Repository\BeerRepositoryInterface;
 use App\Service\FakeService;
 use Carbon\Carbon;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Storage;
 use function PHPUnit\Framework\isEmpty;
 
 class BeerRepository implements BeerRepositoryInterface
@@ -88,12 +89,13 @@ class BeerRepository implements BeerRepositoryInterface
 
     public function makeBeer($data)
     {
-        $image = $data['image'] ?? null;
+//        $image = $data['image'] ?? null;
+//
+//        if (!empty($image)){
+//            $path = $data['image']->store('images','s3');
+//        }
 
-        if (!empty($image)){
-            $path = $data['image']->store('images','s3');
-        }
-
+        $path = $this->saveImage($data);
 
         $newBeer = new Beer([
             'name'=>$data['name'],
@@ -103,17 +105,43 @@ class BeerRepository implements BeerRepositoryInterface
             'id_style'=>$data['style'],
             'image'=>$path ?? null,
         ]);
-        return $newBeer->save();
+       $newBeer->save();
     }
 
     public function deleteBeer(int $id){
 
         return  $this->beerModel->find($id)->delete();
 
+    }
+    public function updateBeer(Beer $beer, array $data)
+    {
 
-//        $this->beerModel->get($id)->delete();
+        $path = $this->saveImage($data);
+
+//        if ($path) {
+//            Storage::disk('s3')->delete($beer->avatar);
+//            $data['avatar'] = $path;
+//        }
+
+        $beer->name = $data['name'];
+        $beer->description = $data['description'];
+        $beer->updated_at = Carbon::now();
+        $beer->id_style = $data['style'];
+        $beer->image = $path ?? null;
+
+        $beer->save();
+
+    }
+
+    private function saveImage (array $data)
+    {
+        $image = $data['image'] ?? null;
+        if (!empty($image)){
+            $path = $data['image']->store('images','s3');
+        }
 
 
+        return $path ?? null;
     }
 
 

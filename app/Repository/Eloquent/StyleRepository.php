@@ -20,8 +20,7 @@ class StyleRepository
     }
 
     public function all(){
-        return $this->beerStyle
-            ->get();
+        return $this->beerStyle->get();
 
     }
 

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Beers;
 use App\Facade\Beer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MakeBeer;
+use App\Http\Requests\UpdateBeer;
 use App\Model\BeerStyle;
 use App\Repository\BeerRepositoryInterface;
 use App\Repository\Eloquent\StyleRepository;
@@ -88,20 +89,39 @@ class BeerController extends Controller
     }
 
     public function addBeer(MakeBeer $request){
-        $data = $request->all();
+        $data = $request->validated();
 
         $this->beerRepository->makeBeer($data);
-
 
         return redirect()
             ->route('beers.list')
             ->with('success', 'Piwo zostało dodane');
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
-        //do zrbobienia
+        {
+            $beer = $this->beerRepository->get($id);
+
+
+            return view('beers.edit', ['beer'=>$beer, 'allStyles' => $this->styleRepository->all(),]);
+        }
     }
+
+    public function update(UpdateBeer $request)
+    {
+        $data = $request->validated();
+        $beer = $this->beerRepository->get((int) $data['beerId']);
+
+
+        $this->beerRepository->updateBeer($beer, $data);
+
+        return redirect()
+            ->route('beers.list')
+            ->with('success','Piwo zostało zaktualizowane');
+
+    }
+
 
     public function delete(Request $request){
 
@@ -116,23 +136,9 @@ class BeerController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
 
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
+
+
 
 }

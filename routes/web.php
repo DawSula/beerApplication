@@ -40,8 +40,6 @@ Route::group(['middleware'=>['auth']], function (){
     });
 
 
-
-
     Route::group([
         'prefix' => 'beers',
         'namespace' => 'Beers',
@@ -58,18 +56,16 @@ Route::group(['middleware'=>['auth']], function (){
 
         Route::get('{beer}', 'BeerController@show')->name('show');
 
-        Route::post('delete', 'BeerController@delete')->name('delete');
+        Route::get('edit/{beer}','BeerController@edit')->name('edit');
 
+        Route::post('update', 'BeerController@update')->name('update');
 
-
-
+        Route::post('/', 'BeerController@delete')->name('delete');
 
     });
 
 
     Route::get('/', 'Beers\BeerController@index');
-
-
 
 
 });

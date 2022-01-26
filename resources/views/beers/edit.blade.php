@@ -15,9 +15,9 @@
                 </div>
             @endif
 
-            <form action="{{ route('beers.addBeer') }}" method="post" enctype="multipart/form-data">
-            @csrf
-
+            <form action="{{ route('beers.update') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="beerId" value="{{ $beer->id }}">
 
                 <div class="form-group">
                     <label for="name">Nazwa</label>
@@ -26,12 +26,13 @@
                         class="form-control @error('name') is-invalid @enderror"
                         id="name"
                         name="name"
-                        value= "{{ old('name') ?? ""}}"
+                        value= "{{ old('name',$beer->name) ?? ""}}"
                     />
                     @error('name')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label for="description">Opis</label>
                     <input
@@ -39,7 +40,7 @@
                         class="form-control @error('description') is-invalid @enderror"
                         id="description"
                         name="description"
-                        value="{{ old('description') ?? "" }}">
+                        value="{{ old('description',$beer->description) ?? "" }}">
                     @error('description')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -51,7 +52,7 @@
                     <select class="custom-select mr-sm-2  @error('style') is-invalid @enderror" name="style">
                         <option value="" selected disabled>GATUNEK</option>
                         @foreach($allStyles ?? [] as $oneStyle)
-                            <option value="{{ $oneStyle['id'] }}">{{ $oneStyle['name'] }}</option>
+                            <option @if($oneStyle['id']==$beer->id_style) selected @endif value="{{ $oneStyle['id'] }}">{{ $oneStyle['name'] }}</option>
                         @endforeach
                     </select>
                     @error('style')
@@ -82,4 +83,5 @@
             </form>
         </div>
     </div>
+
 @endsection
