@@ -4,74 +4,37 @@
 
 @section('content')
 
-
-    
-
-
     <div class="beerContainer">
-        @foreach($users as $user)
-            <div class="beerElementBlock">
-                <div>{{$loop->index}}</div>
-                <div>{{$loop->iteration}}</div>
-                <div>{{$user['id']}}</div>
-                <div>{{$user['name']}}</div>
-                <div>Link</div>
-            </div>
-        @endforeach
-    </div>
 
-
-    <hr/>
-    <hr/>
-    <hr/>
-
-    halo
-    <table>
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nick</th>
-            <th>Opcje</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td colspan="3">EACH</td>
-        </tr>
-        @each('user.listRow', $users, 'userData')
-
-        <td colspan="3">FOREACH</td>
-        @foreach($users as $user)
-            @include('user.listRow',['userData'=>$user])
-        @endforeach
-
-        <td colspan="3">FOR</td>
-        @for($i = 0; $i<count($users); $i++)
-            @include('user.listRow',['userData'=>$users[$i]])
-        @endfor
-
-        <td colspan="3">FORELSE</td>
-        @forelse($users as $user)
-            @include('user.listRow',['userData'=>$user])
-        @empty
+        <table class="table">
+            <thead>
             <tr>
-                <td colspan="3">Lista jest pusta</td>
+                <th scope="col"></th>
+                <th scope="col">Nazwa użytkownika</th>
+                <th scope="col">Email</th>
+                <th scope="col">Opcje</th>
             </tr>
-        @endforelse
-        <tr>
-            <td colspan="3">WHILE</td>
-        </tr>
-        @php
-            $j = 0
-        @endphp
-        @while($j < count($users))
-            @include('user.listRow',['userData'=>$users[$j]])
-            @php
-                $j++
-            @endphp
-        @endwhile
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach($users as $user)
+                    <tr>
+                        <th scope="row">{{$loop->iteration}}</th>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->email}}</td>
+                        <td>
+                            <a class="btn btn-secondary" href="{{route('admin.users.show',['userId'=>$user->id])}}">
+                                Szczegóły</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+
+
+
+
+    </div>
 @endsection
 {{--<table>--}}
 {{--    @each('user.listRow', $users, 'userData')--}}

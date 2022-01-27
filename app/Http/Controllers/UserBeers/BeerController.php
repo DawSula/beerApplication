@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\UserBeers;
 
 use App\Http\Controllers\Controller;
 
@@ -27,13 +27,20 @@ class BeerController extends Controller
     }
 
     public function list(){
-        dd('hello');
+
+
+        $user = Auth::user();
+
+        return view('me.list',[
+            'beers'=>$user->beers()->paginate()
+        ]);
     }
 
-    public function add(Request $request)
+    public function add(AddBeerToUserList $request)
     {
-        $beerId = (int) $request->get('gameId');
+        $beerId = $request->validated();
 
+        $beerId = (int) $request->get('beerId');
 
         $beer = $this->beerRepository->get($beerId);
 
@@ -42,11 +49,19 @@ class BeerController extends Controller
 
         return redirect()
             ->route('beers.show', ['beer'=>$beerId])
-            ->with('success', 'Gra została dodana');
+            ->with('success', 'Piwo zostało dodane');
 
     }
-    public function remove(){
-        dd('hello');
+    public function remove(Request $request){
+        $beerId = (int) $request->get('beerId');
+        $beer = $this->beerRepository->get($beerId);
+
+        $user = Auth::user();
+        $user->removeBeer($beer);
+
+        return redirect()
+            ->route('beers.show', ['beer'=>$beerId])
+            ->with('success', 'Piwo zostało usunięte');
     }
 
     public function rate(){

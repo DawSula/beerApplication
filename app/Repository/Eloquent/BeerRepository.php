@@ -6,11 +6,8 @@ namespace App\Repository\Eloquent;
 
 use App\Model\Beer;
 use App\Repository\BeerRepositoryInterface;
-use App\Service\FakeService;
 use Carbon\Carbon;
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Storage;
-use function PHPUnit\Framework\isEmpty;
+
 
 class BeerRepository implements BeerRepositoryInterface
 {
@@ -89,11 +86,6 @@ class BeerRepository implements BeerRepositoryInterface
 
     public function makeBeer($data)
     {
-//        $image = $data['image'] ?? null;
-//
-//        if (!empty($image)){
-//            $path = $data['image']->store('images','s3');
-//        }
 
         $path = $this->saveImage($data);
 

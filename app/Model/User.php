@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Model;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','avatar'
+        'name', 'email', 'password','avatar','admin'
     ];
 
     /**
@@ -44,5 +46,20 @@ class User extends Authenticatable
     public function addBeer(Beer $beer):void
     {
         $this->beers()->save($beer);
+    }
+
+    public function hasBeer(int $beerid)
+    {
+        $beer = $this->beers()->where('userBeers.beer_id', $beerid)->first();
+
+        return (bool) $beer;
+    }
+    public function removeBeer(Beer $beer)
+    {
+        $this->beers()->detach($beer->id);
+    }
+    public function isAdmin():bool
+    {
+        return (bool) $this->admin;
     }
 }

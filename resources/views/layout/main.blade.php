@@ -41,9 +41,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('beers.add') }}">Dodaj Piwo</a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('beers.dashboard') }}">Statystyki</a>
                 </li>
+                @can('admin')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.users.users') }}">Użytkownicy</a>
+                </li>
+                @endcan
             </ul>
             @else
 
@@ -67,20 +73,21 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('me.profile') }}">
+                                Profil
+                            </a>
+                            <a class="dropdown-item" href="{{ route('me.favourite.list') }}">
+                                Lista
+                            </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                 Wyloguj
                             </a>
-
-
-
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
-                            <a class="dropdown-item" href="{{ route('me.profile') }}">
-                                Profil
-                            </a>
+
                         </div>
 
                     </li>

@@ -49,7 +49,7 @@
                         <div>OCENA: {{ $beer->score}}</div>
                         <a class="btn btn-secondary btn-lg mt-2" role="button"
                            href="{{ route('beers.show', ['beer'=>$beer->id]) }}">Sprawdź</a>
-                        @can('admin')
+
                         <button type="button" class="btn btn-danger btn-lg mt-2" role="button" data-toggle="modal" data-target="#deleteModal">
                             Usuń
                         </button>
@@ -79,14 +79,14 @@
                                 </div>
                             </div>
                         </div>
-                        @endcan
 
-{{--                        <a class="btn btn-secondary btn-lg mt-2" role="button"--}}
-{{--                           href="{{ route('beers.delete', ['beer'=>$beer->id]) }}">Usuń</a>--}}
+
+                        {{--                        <a class="btn btn-secondary btn-lg mt-2" role="button"--}}
+                        {{--                           href="{{ route('beers.delete', ['beer'=>$beer->id]) }}">Usuń</a>--}}
                     </div>
                 </div>
             </div>
-    @endforeach
+        @endforeach
 
     </div>
     <div class="paginator">

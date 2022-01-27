@@ -12,6 +12,7 @@ use App\Model\BeerStyle;
 use App\Repository\BeerRepositoryInterface;
 use App\Repository\Eloquent\StyleRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
@@ -67,11 +68,19 @@ class BeerController extends Controller
     }
 
 
-    public function show(int $beerId)
+    public function show(int $beerId, Request $request)
     {
 
+        $user = Auth::user();
+        $userHasBeer = $user->hasBeer($beerId);
 
-        return view('beers.beer', ['beer' => $this->beerRepository->get($beerId)]);
+
+
+
+        return view('beers.beer', [
+            'beer' => $this->beerRepository->get($beerId),
+            'userHasBeer'=>$userHasBeer,
+        ]);
     }
 
     /**

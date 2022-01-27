@@ -19,6 +19,8 @@ class BeerStyleSeeder extends Seeder
 
         DB::table('beer_style')->truncate();
 
+
+
         DB::table('beer_style')->insert([
             ['name' => 'Klasyczny Lager', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(), 'description' => $faker->sentence],
             ['name' => 'Piwo pszeniczne', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(), 'description' => $faker->sentence],

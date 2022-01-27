@@ -9,6 +9,17 @@ use App\Repository\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
+
+    private User $userModel;
+
+    /**
+     * @param User $userModel
+     */
+    public function __construct(User $userModel)
+    {
+        $this->userModel = $userModel;
+    }
+
     public function updateModel(User $user, array $data): void
     {
         $user->email = $data['email'] ?? $user->email;
@@ -16,6 +27,15 @@ class UserRepository implements UserRepositoryInterface
         $user->avatar = $data['avatar'] ?? null;
         $user->save();
     }
+
+    public function all(){
+        return $this->userModel->get();
+    }
+    public function get(int $id){
+        return $this->userModel->find($id);
+    }
+
+
 }
 
 
