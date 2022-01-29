@@ -21,12 +21,16 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'me', 'as' => 'me.', 'namespace' => 'UserBeers'], function () {
+
         Route::get('profile', 'UserController@profile')->name('profile');
 
         Route::get('edit', 'UserController@edit')->name('edit');
 
         Route::post('update', 'UserController@update')->name('update');
 
+        Route::post('rate','UserBeerRateController@addRate')->name('rate');
+
+        Route::put('rateUp','UserBeerRateController@updateRate')->name('rateUp');
 
         Route::get('beers', 'BeerController@list')->name('favourite.list');
 
@@ -34,22 +38,26 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::delete('beers', 'BeerController@remove')->name('favourite.remove');
 
-        Route::post('beers/rate', 'BeerController@rate')->name('favourite.rate');
+
     });
 
 
     Route::group([ 'namespace' => 'Admin', 'middleware' => 'can:admin'], function () {
+
         Route::group(['as' => 'admin.users.','prefix' => 'user'], function () {
 
             Route::get('/', 'UserController@list')->name('users');
+
             Route::get('{userId}', 'UserController@show')->name('show');
+
         });
 
-        Route::group(['as' => 'admin.waitingBeers','prefix'=>'waitingBeers'],function (){
+        Route::group(['as' => 'admin.waitingBeers.','prefix'=>'waitingBeers'],function (){
 
-           Route::get('/', 'WaitingBeerController@list')->name('beers');
-           Route::delete('/','WaitingBeerController@delete')->name('delete');
-           Route::put('/','WaitingBeerController@show')->name('add');
+           Route::get('/', 'BeerController@list')->name('list');
+
+           Route::put('/','BeerController@approve')->name('approve');
+
         });
 
     });
@@ -72,15 +80,16 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('edit/{beer}', 'BeerController@edit')->name('edit');
 
-        Route::post('update', 'BeerController@update')->name('update');
+        Route::put('update', 'BeerController@update')->name('update');
 
-        Route::post('delete', 'BeerController@delete')->name('delete');
+        Route::delete('delete', 'BeerController@delete')->name('delete');
+
 
 
     });
 
 
-    Route::get('/', 'Beers\BeerController@index');
+    Route::get('/', 'Beers\BeerController@list');
 
 
 });

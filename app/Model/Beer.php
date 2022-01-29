@@ -17,11 +17,16 @@ class Beer extends Model
         'name','description','score','id_style','image'
     ];
 
+    public function beerRate()
+    {
+        return $this->hasMany(BeerRate::class,'rate_id', 'id');
+    }
+
     public function beerStyle()
     {
-
         return $this->belongsTo(BeerStyle::class, 'id_style');
     }
+
 
     // scope
 

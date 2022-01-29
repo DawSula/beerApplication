@@ -7,25 +7,39 @@
 
     <div class="beerContainer">
         @foreach($beers ?? [] as $beer)
+
             <div class="beerElementBlock">
+
                 <div class="card" style="width: 18rem;">
-                    @if($beer->image)
-                        <img src="{{ Storage::disk('s3')->temporaryUrl($beer->image, '+2 minutes') }}" class="rounded mx-auto d-block user-avatar">
-                    @else
-                        <img class="card-img-top" src="/img/defaultBeer.png" alt="Card image cap">
-                    @endif
+                    <form method="post" action="{{ route('admin.waitingBeers.approve') }}">
+                        @method('PUT')
+                        @csrf
+                        <input type="hidden" name="beerId" value="{{ $beer->id }}">
+                        <button class="add-to-list"><i class="icon-ok"></i></button>
+                    </form>
+
+                    <div class="image-height">
+                        @if($beer->image)
+                            <img src="{{ Storage::disk('s3')->temporaryUrl($beer->image, '+2 minutes') }}"
+                                 class="card-img-top">
+                        @else
+                            <img class="card-img-top" src="/img/defaultBeer.png" alt="Card image cap">
+                        @endif
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ $beer->name}}</h5>
                         <p class="card-text">{{ $beer->beerStyle->name}}</p>
-                        <div>OCENA: {{ $beer->score}}</div>
+{{--                        <div>OCENA: {{ $beer->score}}</div>--}}
                         <a class="btn btn-secondary btn-lg mt-2" role="button"
                            href="{{ route('beers.show', ['beer'=>$beer->id]) }}">Sprawdź</a>
 
-                        <button type="button" class="btn btn-danger btn-lg mt-2" role="button" data-toggle="modal" data-target="#deleteModal">
+                        <button type="button" class="btn btn-danger btn-lg mt-2" role="button" data-toggle="modal"
+                                data-target="#deleteModal">
                             Usuń
                         </button>
 
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -45,7 +59,9 @@
                                             <input type="hidden" name="beerId" value="{{ $beer->id }}">
                                             <button type="submit" class="btn btn-danger">Tak</button>
                                         </form>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Powrót</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Powrót
+                                        </button>
 
                                     </div>
                                 </div>
@@ -58,6 +74,7 @@
                     </div>
                 </div>
             </div>
+
         @endforeach
 
     </div>

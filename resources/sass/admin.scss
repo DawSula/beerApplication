@@ -1,4 +1,6 @@
 @import "config";
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
 
 .beerElementBlock{
     @include centeredFlexColumn;
@@ -26,6 +28,23 @@
     margin-top: 60px;
 }
 
+.image-height{
+    height: 250px;
+}
+.card{
+    position: relative;
+}
+.add-to-list{
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background-color: #1d68a7;
+    color: white;
+    border-radius: 3px;
+}
+.add-to-list:hover{
+    opacity: 0.7;
+}
 
 
 

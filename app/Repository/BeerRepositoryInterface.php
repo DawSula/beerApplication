@@ -12,6 +12,9 @@ interface BeerRepositoryInterface
     public function best();
     public function stats();
     public function scoreStatS();
-    public function filterBy(?string $phrase, string $style, int $size);
+    public function approvedFilterBy(?string $phrase, string $style, int $size);
+    public function unapprovedPaginated(int $limit);
+    public function approve(int $beerId);
+
 
 }

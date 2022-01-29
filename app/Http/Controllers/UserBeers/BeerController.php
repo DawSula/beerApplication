@@ -31,6 +31,7 @@ class BeerController extends Controller
 
         $user = Auth::user();
 
+
         return view('me.list',[
             'beers'=>$user->beers()->paginate()
         ]);

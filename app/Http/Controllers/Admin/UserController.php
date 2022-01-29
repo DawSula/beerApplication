@@ -23,12 +23,12 @@ class UserController extends Controller
 
         $users = $this->userRepository->all();
 
-        return view('user.list',['users'=>$users]);
+        return view('admin.user.list',['users'=>$users]);
     }
 
     public function show(int $userId)
     {
         $user = $this->userRepository->get($userId);
-        return view('user.show', ['user'=>$user]);
+        return view('admin.user.show', ['user'=>$user]);
     }
 }

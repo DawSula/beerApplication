@@ -43,9 +43,19 @@ class User extends Authenticatable
         return $this->belongsToMany(Beer::class, 'userBeers');
     }
 
+    public function beersRate()
+    {
+        return $this->belongsToMany(Beer::class,'user_rates')
+            ->withPivot('rate');
+    }
+
     public function addBeer(Beer $beer):void
     {
         $this->beers()->save($beer);
+    }
+
+    private function addRate(Beer $beer){
+        $this->beersRate()->save($beer);
     }
 
     public function hasBeer(int $beerid)
@@ -54,6 +64,13 @@ class User extends Authenticatable
 
         return (bool) $beer;
     }
+    public function hasBeerRate(int $beerid)
+    {
+        $beer = $this->beersRate()->where('user_rates.beer_id', $beerid)->first();
+
+        return (bool) $beer;
+    }
+
     public function removeBeer(Beer $beer)
     {
         $this->beers()->detach($beer->id);
@@ -61,5 +78,15 @@ class User extends Authenticatable
     public function isAdmin():bool
     {
         return (bool) $this->admin;
+    }
+    public function rateBeer(Beer $beer, $rate)
+    {
+        $this->addRate($beer);
+        $this->beersRate()->updateExistingPivot($beer, ['rate'=>$rate]);
+    }
+
+    public function updateRate(Beer $beer, $rate)
+    {
+        $this->beersRate()->updateExistingPivot($beer, ['rate'=>$rate]);
     }
 }

@@ -51,7 +51,7 @@ class UserController extends Controller
         if (!empty($data['avatar'])) {
 //            $path = $data['avatar']->store('avatars', 's3');
             $path = $request->file('avatar')->store('avatars','s3');
-            //$path = $data['avatar']->storeAs('avatars', $user->id() . '.png', 'public');
+            //$path = $data['avatar']->storeAs('avatars', $admin->id() . '.png', 'public');
 
 
             if ($path) {

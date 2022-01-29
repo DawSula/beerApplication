@@ -10,6 +10,7 @@ use App\Http\Requests\MakeBeer;
 use App\Http\Requests\UpdateBeer;
 use App\Model\BeerStyle;
 use App\Repository\BeerRepositoryInterface;
+use App\Repository\Eloquent\RateRepository;
 use App\Repository\Eloquent\StyleRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,12 +24,14 @@ class BeerController extends Controller
 
     private BeerRepositoryInterface $beerRepository;
     private StyleRepository $styleRepository;
+    private RateRepository $rateRepository;
 
 
-    public function __construct(BeerRepositoryInterface $beerRepository, StyleRepository $styleRepository)
+    public function __construct(BeerRepositoryInterface $beerRepository, StyleRepository $styleRepository, RateRepository $rateRepository)
     {
         $this->beerRepository = $beerRepository;
         $this->styleRepository = $styleRepository;
+        $this->rateRepository = $rateRepository;
     }
 
     public function dashboard()
@@ -42,15 +45,17 @@ class BeerController extends Controller
         ]);
     }
 
-    public function index(Request $request): View
+    public function list(Request $request): View
     {
 
 
+
+        $rates = $this->rateRepository->showRates();
         $phrase = $request->get('phrase');
         $style = $request->get('style', 'all');
 
 
-        $resultPaginator = $this->beerRepository->filterBy($phrase, $style, 9);
+        $resultPaginator = $this->beerRepository->approvedFilterBy($phrase, $style, 9);
         $resultPaginator->appends([
             'phrase' => $phrase,
             'style' => $style,
@@ -64,6 +69,7 @@ class BeerController extends Controller
                 'phrase' => $phrase,
                 'style' => $style,
                 'allStyles' => $this->styleRepository->all(),
+                'rates'=>$rates,
             ]);
     }
 

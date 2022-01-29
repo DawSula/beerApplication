@@ -11,6 +11,7 @@
         "php": "^7.4.0",
         "ext-pdo_sqlite": "*",
         "aws/aws-sdk-php": "^3.209",
+        "doctrine/dbal": "^3.3",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^7.0.1",

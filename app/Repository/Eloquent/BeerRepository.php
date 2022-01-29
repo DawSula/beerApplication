@@ -16,7 +16,7 @@ class BeerRepository implements BeerRepositoryInterface
 //    public function __construct(Beer $beerModel, FakeService $config)
     public function __construct(Beer $beerModel)
     {
-        $this->beerModel=$beerModel;
+        $this->beerModel = $beerModel;
     }
 
     public function get(int $beerId)
@@ -28,6 +28,7 @@ class BeerRepository implements BeerRepositoryInterface
     {
         return $this->beerModel
             ->with('beerStyle')
+            ->with('beerRate')
             ->get();
     }
 
@@ -38,6 +39,16 @@ class BeerRepository implements BeerRepositoryInterface
             ->orderBy('beers.score', 'desc')
             ->paginate($limit);
     }
+
+    public function unapprovedPaginated(int $limit)
+    {
+        return $this->beerModel
+            ->with('beerStyle')
+            ->where('approved', '0')
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
+    }
+
 
     public function best()
     {
@@ -67,17 +78,19 @@ class BeerRepository implements BeerRepositoryInterface
             ->get();
     }
 
-    public function filterBy(?string $phrase, $style, int $size)
+    public function approvedFilterBy(?string $phrase, $style, int $size)
     {
         $query = $this->beerModel
             ->with('beerStyle')
+            ->with('beerRate')
+            ->where('approved', 1)
             ->orderBy('created_at');
 
-        if ($phrase){
+        if ($phrase) {
             $query->whereRaw('name like ?', ["$phrase%"]);
         }
-        if ($style !== 'all'){
-            $query->where('id_style',$style);
+        if ($style !== 'all') {
+            $query->where('id_style', $style);
         }
 
         return $query->paginate($size);
@@ -90,21 +103,30 @@ class BeerRepository implements BeerRepositoryInterface
         $path = $this->saveImage($data);
 
         $newBeer = new Beer([
-            'name'=>$data['name'],
-            'description'=>$data['description'],
-            'created_at'=> Carbon::now(),
-            'updated_at'=> Carbon::now(),
-            'id_style'=>$data['style'],
-            'image'=>$path ?? null,
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'id_style' => $data['style'],
+            'image' => $path ?? null,
         ]);
-       $newBeer->save();
+        $newBeer->save();
     }
 
-    public function deleteBeer(int $id){
+    public function approve(int $id)
+    {
+        $beer = $this->beerModel->find($id);
+        $beer->approved = 1;
+        $beer->save();
+    }
 
-        return  $this->beerModel->find($id)->delete();
+    public function deleteBeer(int $id)
+    {
+
+        return $this->beerModel->find($id)->delete();
 
     }
+
     public function updateBeer(Beer $beer, array $data)
     {
 
@@ -125,16 +147,23 @@ class BeerRepository implements BeerRepositoryInterface
 
     }
 
-    private function saveImage (array $data)
+    private function saveImage(array $data)
     {
         $image = $data['image'] ?? null;
-        if (!empty($image)){
-            $path = $data['image']->store('images','s3');
+        if (!empty($image)) {
+            $path = $data['image']->store('images', 's3');
         }
-
 
         return $path ?? null;
     }
 
+//    public function showRates()
+//    {
+//        $query = $this->beerModel
+//            ->with('beerRate')
+//            ->find($id)
+//            ->avg('rate');
+//        return $query;
+//    }
 
 }

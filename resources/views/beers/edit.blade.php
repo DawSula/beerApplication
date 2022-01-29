@@ -16,6 +16,7 @@
             @endif
 
             <form action="{{ route('beers.update') }}" method="post" enctype="multipart/form-data">
+                @method('PUT')
                 @csrf
                 <input type="hidden" name="beerId" value="{{ $beer->id }}">
 

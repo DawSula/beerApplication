@@ -8,7 +8,7 @@ use Illuminate\Http\Client\Request;
 class MakeBeer extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the admin is authorized to make this request.
      *
      * @return bool
      */

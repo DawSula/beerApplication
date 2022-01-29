@@ -4,10 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddBeerToUserList extends FormRequest
+class RateBeer extends FormRequest
 {
     /**
-     * Determine if the admin is authorized to make this request.
+     * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
@@ -23,14 +23,9 @@ class AddBeerToUserList extends FormRequest
      */
     public function rules()
     {
-
-
         return [
-            'beerId' => [
-                'required',
-                'integer',
-                'unique:userBeers,beer_id'
-            ]
+            'rate' => 'required|between:1,5',
+            'beerId'=>'required',
         ];
     }
 }

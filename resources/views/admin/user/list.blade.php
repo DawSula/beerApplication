@@ -37,7 +37,7 @@
     </div>
 @endsection
 {{--<table>--}}
-{{--    @each('user.listRow', $users, 'userData')--}}
+{{--    @each('admin.listRow', $users, 'userData')--}}
 {{--</table>--}}
 
 

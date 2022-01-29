@@ -10,7 +10,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 
-class BeerRepository implements BeerRepositoryInterface
+class BuilderBeerRepository
+//    implements BeerRepositoryInterface
 {
     private Beer $beerModel;
 
@@ -30,24 +31,33 @@ class BeerRepository implements BeerRepositoryInterface
 
     }
 
-    public function allPaginated(int $limit)
+    public function allPaginated(int $limit, $phrase, $style)
     {
         $pageName = 'page';
         $currentPage = Paginator::resolveCurrentPage($pageName);
 
         $baseQuery = DB::table('beers')
             ->join('beer_style', 'beers.id_style', '=', 'beer_style.id');
+
         $total = $baseQuery->count();
 
         $data = collect();
 
+
         if ($total){
             $data = $baseQuery
                 ->select(
-                    'beers.id', 'beers.name', 'beers.description','beers.score',
+                    'beers.id', 'beers.name', 'beers.description','image',
                     'beer_style.name as style_name'
                 )
-                ->latest('beers.created_at')
+                ->latest('beers.created_at');
+            if ($phrase) {
+                $data->whereRaw('name like ?', ["$phrase%"]);
+            }
+            if ($style !== 'all') {
+                $data->where('id_style', $style);
+            }
+            $data
                 ->forPage($currentPage,$limit)
                 ->get()
                 ->map(fn($row)=>$this->createBeer($row));
@@ -113,9 +123,6 @@ class BeerRepository implements BeerRepositoryInterface
 
         return $beer;
     }
-    public function filterBy(?string $phrase, string $type = 'beer', int $size = 12)
-    {
-        // TODO: Implement filterBy() method.
-    }
+
 
 }
