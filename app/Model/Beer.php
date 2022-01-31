@@ -38,10 +38,12 @@ class Beer extends Model
             ->where('score', '>', 4);
     }
 
-    public function scopeStyle(Builder $query, int $beerId): Builder
+    public function removeRates(Beer $beer)
     {
-        return $query->where('id_style', $beerId);
+        $this->beerModel->beerRate->detach($beer->id);
+
     }
+
 
 
 }

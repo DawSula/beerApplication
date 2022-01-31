@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Eloquent;
 
 use App\Model\Beer;
+use App\Model\BeerRate;
 use App\Repository\BeerRepositoryInterface;
 use Carbon\Carbon;
 
@@ -13,22 +14,28 @@ class BeerRepository implements BeerRepositoryInterface
 {
     private Beer $beerModel;
 
-//    public function __construct(Beer $beerModel, FakeService $config)
+
+
     public function __construct(Beer $beerModel)
     {
         $this->beerModel = $beerModel;
+
     }
+
 
     public function get(int $beerId)
     {
         return $this->beerModel->find($beerId);
     }
 
+    public function getWithAvgScore($beerId){
+        return $this->beerModel->withAvg('beerRate','rate')->find($beerId);
+    }
+
     public function all()
     {
         return $this->beerModel
             ->with('beerStyle')
-            ->with('beerRate')
             ->get();
     }
 
@@ -82,7 +89,8 @@ class BeerRepository implements BeerRepositoryInterface
     {
         $query = $this->beerModel
             ->with('beerStyle')
-            ->with('beerRate')
+            ->withCount('beerRate')
+            ->withAvg('beerRate','rate')
             ->where('approved', 1)
             ->orderBy('created_at');
 
@@ -157,13 +165,6 @@ class BeerRepository implements BeerRepositoryInterface
         return $path ?? null;
     }
 
-//    public function showRates()
-//    {
-//        $query = $this->beerModel
-//            ->with('beerRate')
-//            ->find($id)
-//            ->avg('rate');
-//        return $query;
-//    }
+
 
 }

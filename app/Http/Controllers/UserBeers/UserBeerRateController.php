@@ -30,27 +30,29 @@ class UserBeerRateController extends Controller
 
     public function addRate(RateBeer $request){
 
-
-
         $data = $request->validated();
         $beerId = (int) $data['beerId'];
         $rate = $data['rate'];
         $beer = $this->beerRepository->get($beerId);
         $user = Auth::user();
+        $userId = $user['id'];
+
         if ($user->hasBeerRate($beerId)){
+            $oldRate = $user->findOldRate($beerId, $userId);
+            $this->rateRepository->removeOldRate($beerId,$oldRate);
+            $this->rateRepository->addRate($beerId,$rate);
             $user->updateRate($beer, $rate);
             return redirect()
-                ->route('beers.list');
+                ->route('beers.list')
+                ->with('success', 'Zaktualizowano ocenę');
         }
         else{
             $user->rateBeer($beer, $rate);
             $this->rateRepository->addRate($beerId,$rate);
             return redirect()
-                ->route('beers.list');
+                ->route('beers.list')
+                ->with('success', 'Oceniono');
         }
-
-
-
     }
 
 }

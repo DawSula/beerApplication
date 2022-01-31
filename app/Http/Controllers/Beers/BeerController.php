@@ -34,23 +34,10 @@ class BeerController extends Controller
         $this->rateRepository = $rateRepository;
     }
 
-    public function dashboard()
-    {
-
-
-        return view('beers.dashboard', [
-            'bestBeers' => $this->beerRepository->best(),
-            'stats' => $this->beerRepository->stats(),
-            'scoreStats' => $this->beerRepository->scoreStats()
-        ]);
-    }
 
     public function list(Request $request): View
     {
 
-
-
-        $rates = $this->rateRepository->showRates();
         $phrase = $request->get('phrase');
         $style = $request->get('style', 'all');
 
@@ -69,10 +56,9 @@ class BeerController extends Controller
                 'phrase' => $phrase,
                 'style' => $style,
                 'allStyles' => $this->styleRepository->all(),
-                'rates'=>$rates,
+
             ]);
     }
-
 
     public function show(int $beerId, Request $request)
     {
@@ -83,8 +69,9 @@ class BeerController extends Controller
 
 
 
+
         return view('beers.beer', [
-            'beer' => $this->beerRepository->get($beerId),
+            'beer' => $this->beerRepository->getWithAvgScore($beerId),
             'userHasBeer'=>$userHasBeer,
         ]);
     }
@@ -142,7 +129,11 @@ class BeerController extends Controller
 
 
 
-        $this->beerRepository->deleteBeer((int) $request->get('beerId'));
+        $beerId = (int) $request->get('beerId');
+        $beer = $this->beerRepository->get($beerId);
+        $user = Auth::user();
+        $user->removeBeers($beer);
+        $this->beerRepository->deleteBeer($beerId);
 
         return redirect()
             ->route('beers.list')

@@ -33,7 +33,7 @@ class BeerController extends Controller
 
 
         return view('me.list',[
-            'beers'=>$user->beers()->paginate()
+            'beers'=>$user->beers()->withAvg('beerRate','rate')->paginate()
         ]);
     }
 
@@ -58,7 +58,8 @@ class BeerController extends Controller
         $beer = $this->beerRepository->get($beerId);
 
         $user = Auth::user();
-        $user->removeBeer($beer);
+        $userId = $user['id'];
+        $user->removeBeer($beer, $userId);
 
         return redirect()
             ->route('beers.show', ['beer'=>$beerId])

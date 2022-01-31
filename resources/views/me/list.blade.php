@@ -9,15 +9,19 @@
         @foreach($beers ?? [] as $beer)
             <div class="beerElementBlock">
                 <div class="card" style="width: 18rem;">
-                    @if($beer->image)
-                        <img src="{{ Storage::disk('s3')->temporaryUrl($beer->image, '+2 minutes') }}" class="rounded mx-auto d-block user-avatar">
-                    @else
-                        <img class="card-img-top" src="/img/defaultBeer.png" alt="Card image cap">
-                    @endif
+                    <div class="image-height">
+                        @if($beer->image)
+                            <img src="{{ Storage::disk('s3')->temporaryUrl($beer->image, '+2 minutes') }}"
+                                 class="card-img-top">
+                        @else
+                            <img class="card-img-top" src="/img/defaultBeer.png" alt="Card image cap">
+                        @endif
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ $beer->name}}</h5>
                         <p class="card-text">{{ $beer->beerStyle->name}}</p>
-                        <div>OCENA: {{ $beer->score}}</div>
+                        @php $rate = $beer->beer_rate_avg_rate @endphp
+                        <p class="card-text">OCENA: {{ number_format((float)$rate,1)}}</p>
                         <a class="btn btn-secondary btn-lg mt-2" role="button"
                            href="{{ route('beers.show', ['beer'=>$beer->id]) }}">Sprawdź</a>
 

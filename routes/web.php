@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::resource('beers','BeerController');
+
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -26,13 +26,11 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('edit', 'UserController@edit')->name('edit');
 
+        Route::get('beers', 'BeerController@list')->name('favourite.list');
+
         Route::post('update', 'UserController@update')->name('update');
 
         Route::post('rate','UserBeerRateController@addRate')->name('rate');
-
-        Route::put('rateUp','UserBeerRateController@updateRate')->name('rateUp');
-
-        Route::get('beers', 'BeerController@list')->name('favourite.list');
 
         Route::post('beers', 'BeerController@add')->name('favourite.add');
 
@@ -67,30 +65,24 @@ Route::group(['middleware' => ['auth']], function () {
         'namespace' => 'Beers',
         'as' => 'beers.'
     ], function () {
-        Route::get('dashboard', 'BeerController@dashboard')
-            ->name('dashboard');
 
         Route::get('/', 'BeerController@list')->name('list');
 
         Route::get('add', 'BeerController@add')->name('add');
 
-        Route::post('addBeer', 'BeerController@addBeer')->name('addBeer');
-
         Route::get('{beer}', 'BeerController@show')->name('show');
 
-        Route::get('edit/{beer}', 'BeerController@edit')->name('edit');
+        Route::get('edit/{beer}', 'BeerController@edit')->name('edit')->middleware('can:admin');
 
         Route::put('update', 'BeerController@update')->name('update');
 
+        Route::post('addBeer', 'BeerController@addBeer')->name('addBeer');
+
         Route::delete('delete', 'BeerController@delete')->name('delete');
-
-
 
     });
 
-
     Route::get('/', 'Beers\BeerController@list');
-
 
 });
 

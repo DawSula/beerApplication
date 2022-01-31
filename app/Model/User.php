@@ -6,6 +6,8 @@ namespace App\Model;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -71,10 +73,15 @@ class User extends Authenticatable
         return (bool) $beer;
     }
 
-    public function removeBeer(Beer $beer)
+    public function removeBeer(Beer $beer, $userId)
+    {
+        $this->beers()->where('user_id',$userId)->detach($beer->id);
+    }
+    public function removeBeers(Beer $beer)
     {
         $this->beers()->detach($beer->id);
     }
+
     public function isAdmin():bool
     {
         return (bool) $this->admin;
@@ -88,5 +95,10 @@ class User extends Authenticatable
     public function updateRate(Beer $beer, $rate)
     {
         $this->beersRate()->updateExistingPivot($beer, ['rate'=>$rate]);
+    }
+    public function findOldRate($beerId, $userId)
+    {
+        $db = DB::table('user_rates')->where('user_id',$userId)->where('beer_id',$beerId)->first('rate');
+        return (int) $db->rate;
     }
 }

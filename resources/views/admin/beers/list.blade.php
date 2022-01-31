@@ -29,7 +29,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $beer->name}}</h5>
                         <p class="card-text">{{ $beer->beerStyle->name}}</p>
-{{--                        <div>OCENA: {{ $beer->score}}</div>--}}
+
                         <a class="btn btn-secondary btn-lg mt-2" role="button"
                            href="{{ route('beers.show', ['beer'=>$beer->id]) }}">Sprawdź</a>
 

@@ -5,19 +5,19 @@
 
 
     <div class="headAsk">
+        <div>
+            <form class="form-inline" action="{{ route('beers.list') }}">
+                <div class="form-row">
+                    <label class="my-1 mr-2" for="phrase">Szukana fraza</label>
+                    <div class="col">
+                        <input type="text" class="form-control" name="phrase" placeholder="" value="{{ $phrase ?? ''}}">
+                    </div>
 
-        <form class="form-inline" action="{{ route('beers.list') }}">
-            <div class="form-row">
-                <label class="my-1 mr-2" for="phrase">Szukana fraza</label>
-                <div class="col">
-                    <input type="text" class="form-control" name="phrase" placeholder="" value="{{ $phrase ?? ''}}">
                 </div>
 
-            </div>
-
             @php $style = $style ?? ''; @endphp
-
-
+        </div>
+        <div class="blockPhrase">
             <div class="col-auto">
                 <select class="custom-select mr-sm-2" name="style">
                     <option @if($style == 'all') selected @endif value="all"> Wszystkie</option>
@@ -28,31 +28,66 @@
                 </select>
             </div>
 
-            <button class="btn btn-secondary" type="submit"> Szukaj</button>
+            <div>
+                <button class="btn btn-secondary" type="submit"> Szukaj</button>
+            </div>
 
-        </form>
 
+            </form>
+        </div>
     </div>
+
 
 
 
     <div class="beerContainer">
         @foreach($beers ?? [] as $beer)
+
             <div class="beerElementBlock">
                 <div class="card" style="width: 18rem;">
-                    @if($beer->image)
-                        <img src="{{ Storage::disk('s3')->temporaryUrl($beer->image, '+2 minutes') }}"
-                             class="rounded mx-auto d-block user-avatar">
-                    @else
-                        <img class="card-img-top" src="/img/defaultBeer.png" alt="Card image cap">
-                    @endif
+                    <div class="image-height">
+                        @if($beer->image)
+                            <img src="{{ Storage::disk('s3')->temporaryUrl($beer->image, '+2 minutes') }}"
+                                 class="card-img-top">
+                        @else
+                            <img class="card-img-top" src="/img/defaultBeer.png" alt="Card image cap">
+                        @endif
+                    </div>
+
                     <div class="card-body">
                         <h5 class="card-title">{{ $beer->name}}</h5>
                         <p class="card-text">{{ $beer->beerStyle->name}}</p>
 
+                        @if(!empty($beer->beer_rate_avg_rate))
+                            @php $rate = $beer->beer_rate_avg_rate @endphp
+                            <p class="card-text">OCENA: {{ number_format((float)$rate,1)}} </p>
+                            <p class="card-text mt-1"> Łącznie: {{($beer->beer_rate_count)}} </p>
 
+                        @else
+                            <p class="card-text">BRAK OCEN</p>
+                            <p>-</p>
+                        @endif
 
-                        {{--                                                <div>OCENA: {{ $beer->score}}</div>--}}
+                        <div class="mb-4">
+                            <form class="form-inline" method="post" action="{{ route('me.rate') }}">
+                                @csrf
+                                <input type="hidden" name="beerId" value="{{ $beer->id }}">
+                                <div>
+                                    <select class="custom-select mr-sm-2" name="rate">
+                                        <option selected disabled> Wybierz ocenę</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-secondary rateButton">
+                                        Oceń
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
                         <a class="btn btn-secondary btn-lg mt-2" role="button"
                            href="{{ route('beers.show', ['beer'=>$beer->id]) }}">Sprawdź</a>
                         @can('admin')
@@ -90,34 +125,9 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
                         @endcan
-                        <form class="form-inline" method="post" action="{{ route('me.rate') }}">
-                            @csrf
-                            <input type="hidden" name="beerId" value="{{ $beer->id }}">
-                            <div class="col-auto">
-                                <select class="custom-select mr-sm-2" name="rate">
-                                    <option selected disabled> Wybierz ocenę</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
 
 
-                                <button type="submit" class="btn btn-secondary">
-                                    Oceń
-                                </button>
-                            </div>
-                        </form>
-
-                        {{--                        <a class="btn btn-secondary btn-lg mt-2" role="button"--}}
-                        {{--                           href="{{ route('beers.delete', ['beer'=>$beer->id]) }}">Usuń</a>--}}
                     </div>
                 </div>
             </div>

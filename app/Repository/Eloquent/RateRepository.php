@@ -27,13 +27,14 @@ class RateRepository
         ]);
         $beerRate->save();
     }
-    public function showRates()
+
+
+    public function removeOldRate(int $rateId, int $rate)
     {
-        $query = $this->beerRate
-            ->select($this->beerRate->raw('avg(rate) as rate','rate_id'))
-            ->groupBy('rate_id')
-            ->get();
-        return $query;
+        $beerRate = $this->beerRate->where('rate_id','=', $rateId)->where('rate', '=', $rate)->first();
+        $beerRate->delete();
     }
+
+
 
 }

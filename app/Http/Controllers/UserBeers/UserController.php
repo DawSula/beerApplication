@@ -45,14 +45,10 @@ class UserController extends Controller
         $user = Auth::user();
         $data = $request->all();
 
-//        dd($data);
 
         $path = null;
         if (!empty($data['avatar'])) {
-//            $path = $data['avatar']->store('avatars', 's3');
             $path = $request->file('avatar')->store('avatars','s3');
-            //$path = $data['avatar']->storeAs('avatars', $admin->id() . '.png', 'public');
-
 
             if ($path) {
                 Storage::disk('s3')->delete($user->avatar);
@@ -60,14 +56,9 @@ class UserController extends Controller
             }
         }
 
-
-
-//        $path = $request->file('avatar')->store('images','s3');
-
-        // logika zapisu
         $this->userRepository->updateModel(Auth::user(), $data);
 
-//        return Storage::disk('s3')->response($path);
+
         return redirect()
             ->route('me.profile')
             ->with('success', 'Profil zaktualizowany');

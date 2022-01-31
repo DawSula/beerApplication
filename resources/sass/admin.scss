@@ -45,6 +45,27 @@
 .add-to-list:hover{
     opacity: 0.7;
 }
+.blockPhrase{
+    display: flex;
+}
+
+@media (max-width: 800px) {
+    .headAsk{
+        @include centeredFlexColumn;
+        .blockPhrase{
+            margin-top: 20px;
+        }
+    }
+}
+
+@media (max-width: 575px) {
+  .rateButton{
+      margin-top: 15px;
+  }
+
+}
+
+
 
 
 

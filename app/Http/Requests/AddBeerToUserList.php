@@ -29,7 +29,6 @@ class AddBeerToUserList extends FormRequest
             'beerId' => [
                 'required',
                 'integer',
-                'unique:userBeers,beer_id'
             ]
         ];
     }

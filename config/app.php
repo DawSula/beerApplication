@@ -177,7 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         \App\Providers\BeerServiceProvider::class,
         \App\Providers\UserServiceProvider::class,
-        \App\Providers\FakeServiceProvider::class
+//        \App\Providers\FakeServiceProvider::class
 
 
     ],

@@ -7,13 +7,12 @@
             @if($user->avatar)
                 <img src="{{ Storage::disk('s3')->temporaryUrl($user->avatar, '+2 minutes') }}" class="rounded mx-auto d-block user-avatar">
             @else
-                <img src="/images/avatar.png" class="rounded mx-auto d-block">
+                <img src="/img/default-avatar.png" class="rounded mx-auto d-block">
             @endif
             <ul>
                 <li>Nazwa: {{ $user->name }}</li>
                 <li>Email: {{ $user->email }}</li>
             </ul>
-
             <a href="{{ route('me.edit') }}" class="btn btn-light">Edytuj dane</a>
         </div>
     </div>
